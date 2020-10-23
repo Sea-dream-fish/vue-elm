@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11-数据作操完整版</title>
+    <style>
+        * {
+            list-style: none;
+        }
+
+        ul>li>span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: burlywood;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            color: wheat;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 视图 -->
+    <div id="app">
+        <h2 v-show="!isEdit">提交数据</h2>
+        <h2 v-show="isEdit">修改数据</h2>
+
+        <!-- 表单提交 -->
+        <div>
+            ID:<input type="number" v-model="ID">
+
+        </div>
+        <div>
+            name:<input type="text" v-model="name">
+        </div>
+        <button @click="add" v-show="!isEdit">提交</button>
+        <button @click="editBtn" v-show="isEdit">修改</button>
+
+        <h4>搜索 <input type="text" v-model="keywords" placeholder="请输入要搜索的名字"></h4>
+        <!-- 数据显示模块 -->
+        <h3>数据列表</h3>
+        <ul>
+            <li v-for="item,index in search(keywords)">
+                {{item.id}}--
+                {{item.name}}
+                <span @click="move(index)">X</span>
+                <!-- 修改按钮 -->
+                <button @click="edit(index)">修改</button>
+            </li>
+        </ul>
+    </div>
+
+
+</body>
+<!-- 调度者 MV  -->
+<script src="js/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            ID: '',
+            name: '',
+
+            list: [
+                { id: 1, name: '小明' },
+                { id: 2, name: '小飞' },
+                { id: 3, name: '小芳' },
+            ],
+            //修改按钮切换
+            isEdit: false,
+            //记录修改数据的id
+            editId: 0,
+
+            // /定义关键字
+            keywords :'',
+
+        }, methods: {
+            add() {
+                this.list.push({ id: this.ID, name: this.name })
+                this.ID = '';
+                this.name = '';
+
+            },
+            editBtn(){
+                this.list[this.editId].id = this.ID;
+                this.list[this.editId].name = this.name;
+                // 清除输入框内容
+                this.ID = this.name = '';
+                
+                // 切换按钮
+                this.isEdit= false;
+            }
+            ,
+            edit(index) {
+                // console.log(index)
+                // 通过下表获得需要修改的数据
+                this.ID = this.list[index].id;
+                this.name = this.list[index].name;
+
+                //修改按钮
+                this.isEdit = true;
+                // 记录修改的变量
+                this.editId = index;
+            },
+            move(index) {
+                // splice是数组方法，基础（如果想对数据操作更加熟练，把数组操作弄一遍）
+                this.list.splice(index, 1)
+            },
+            //搜索 
+            search(keywords){
+                // console.log(keywords)
+                // 进行过滤操作  es6方法 ————
+                // filter  能匹配到指定的数组对象，放回一整个对象
+                return this.list.filter(function(item){
+                    //检查名字当中是否含有我们输入的内容
+                    if(item.name.indexOf(keywords) !=-1){
+                        return item; // 对象返回出去
+                    }
+                })
+            },
+
+        }
+    })
+</script>
+
+</html>
