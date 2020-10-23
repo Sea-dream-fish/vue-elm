@@ -1,0 +1,57 @@
+@mixin bg-img($url,$size){
+    // 背景默认二倍图    
+    background-image: url("#{$url}@2x.png");
+    // 字体大小
+    background-size: $size;
+    // 是否平铺
+    background-repeat: no-repeat;
+    // 如果媒体查询是三倍图手机，使用3x的图片
+    @media (-webkit-min-derice-pixel-ratio:3),(min-derice-pixel-ratio:3) {
+        background-image: url("#{$url}@3x.png");
+    }
+}
+@mixin suports($type,$size) {
+    &.decrease{
+        @include bg-img('/image/decrease_#{$type}',$size )
+    }
+    &.discount{
+        @include bg-img('/image/discount_#{$type}',$size )
+    }
+    &.guarantee{
+        @include bg-img('/image/guarantee_#{$type}',$size )
+    }
+    &.invoice{
+        @include bg-img('/image/invoice_#{$type}',$size )
+    }
+    &.special{
+        @include bg-img('/image/special_#{$type}',$size )
+    }
+}
+
+// 评星逻辑
+@mixin stars($size,$right) {
+    $wh:$size/2;
+    // 设置宽高
+    .stars-#{$size}{
+        display: inline-block;
+        width: $wh +px;
+        height: $wh +px;
+        margin-right: $right+px;
+        &:last-child{
+            margin-right: 0px;
+        }
+        // 全星
+        &.stars-on{
+            @include bg-img('/image/star#{$size}_on',$wh+px $wh+px )
+        }
+        // 半星
+        &.stars-half{
+            @include bg-img('/image/star#{$size}_half',$wh+px $wh+px )
+        }
+        // 无星
+        &.stars-off{
+            @include bg-img('/image/star#{$size}_off',$wh+px $wh+px )
+        }
+    }
+    
+}

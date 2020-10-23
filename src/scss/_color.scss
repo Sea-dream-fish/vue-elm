@@ -1,0 +1,13 @@
+$e-red: rgb(240, 20, 20);
+$e-white: #fff;
+$e-header:rgb(7,17,27,0.5);
+$e-gray:rgb(77,85,93);
+$e-yellow:rgb(255,153,0);
+$e-hui:rgb(147, 153, 159);
+$e-blue:rgb(0,160,220);
+
+
+// 因为项目中多次使用rgb的颜色，所以写成函数形式方便调用
+@function eleblack($opacity:1){
+    @return rgba(7,17,27,$opacity)
+}
